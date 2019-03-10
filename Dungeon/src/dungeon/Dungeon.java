@@ -16,16 +16,21 @@ public class Dungeon {
         Random rand = new Random();
         
         //Game variables
-        String [] enemies = { "Skeleton", "Zombie", "Warrior", "Assassin"};
+        String [] enemies = { "Skeleton", "Zombie", "Warrior", "Goblin, Golem"};
+        String [] bosses = {"Troll", "Nazgul", "Dragon", "Vampire" };
+        int level = 1;
         
         //Enemy variables
-        int maxEnemyHealth = 75; //Enemy health
+        int maxEnemyHealth = 50; //Enemy health
         int enemyAttackDamage = 25; //Enemy attack
+        
+        int maxBossHealth = 100; //Boss health
+        int BossAttackDamage = 50; //Boss attack
         
         // Player variables
         int health = 100;
-        int attackDamage = 50;
-        int numHealthPotions = 3;
+        int attackDamage = 40;
+        int numHealthPotions = 2;
         int healthPotionHealAmount = 30; //Added to current health
         int healthPotionDropChance = 50; //Percentage
         
@@ -37,11 +42,14 @@ public class Dungeon {
         while(running) {
             System.out.println("---------------------------------------------");
             
-            int enemyHealth = rand.nextInt(maxEnemyHealth);
+            int enemyHealth = rand.nextInt(maxEnemyHealth) + 1;
+            int bossHealth = rand.nextInt(maxBossHealth) + 1;
             String enemy = enemies[rand.nextInt(enemies.length)];
-            System.out.println("\t# " + enemy + " has appeared! #\n");
+            String boss = bosses[rand.nextInt(bosses.length)];
+            System.out.println("\t# " + "A "+ enemy + " has appeared! #\n");
             
             while(enemyHealth > 0) {
+                System.out.println("Level: " + level);
                 System.out.println("\tYour HP: " + health);
                 System.out.println("\t" + enemy + "'s HP: " + enemyHealth);
                 System.out.println("\n\tWhat would you like to do?");
@@ -58,7 +66,7 @@ public class Dungeon {
                     health -= damageTaken;
                     
                     System.out.println("\t> You strike the " + enemy + " for " + damageDealt + " damage!");
-                    System.out.println("\t> You recieved " + damageTaken +  "in retaliation!");
+                    System.out.println("\t> You recieved " + damageTaken +  " damage in retaliation!");
                     
                     if (health < 1) {
                         System.out.println("\t> You have taken too much damage, you are too weak to go on!");
@@ -72,11 +80,11 @@ public class Dungeon {
                         numHealthPotions--;
                         System.out.println("\t> You drink a health potion, healing yourself for " + healthPotionHealAmount + "!"
                         + " \n\t> You now have " + health + " HP!");
-                        System.out.println("\t>You have "  + numHealthPotions + " left!");
+                        System.out.println("\t>You have "  + numHealthPotions + " health potions left!");
                        
                     }
                     else {
-                        System.out.println("You are out of healt potions! Defeat the enemy for a chance to get one or run!");
+                        System.out.println("You are out of health potions! Defeat the enemy for a chance to get one or run!");
                     }
                 
                 }
@@ -93,12 +101,13 @@ public class Dungeon {
             }
             
             if(health < 1) {
-                System.out.println("You limp out of the Dungeon, weak from battle.");
+                System.out.println("YOU ARE DEAD!.");
                 break;
             }
             System.out.println("---------------------------------------------");
             System.out.println(" # " + enemy + " was defeated! #");
             System.out.println(" # You have " + health + " HP left! #");
+            level = level + 1;
             if(rand.nextInt(100) < healthPotionDropChance){
                 numHealthPotions++;
                 System.out.println(" # The " + enemy +" dropped a health potion!");
